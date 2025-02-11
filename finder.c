@@ -30,40 +30,41 @@ struct citizen{
 
 
 void findPlayer(char *map, struct player *Player) {
-    find(*map, '@', Player->pos);
+    finder(*map, '@', Player->pos);
 }
+
 void findHole(char *map, struct hole *Hole){
-    find(*map, 'O', Hole->pos);
+    finder(*map, 'O', Hole->pos);
 }
-void findHole(char *map, struct exit *Exit){
-    find(*map, 'X', Exit->pos);
+void findExit(char *map, struct exit *Exit){
+    finder(*map, 'X', Exit->pos);
 }
-void findHole(char *map, struct landmine *Landmine){
-    find(*map, 'L', Landmine->pos);
+void findLandmine(char *map, struct landmine *Landmine){
+    finder(*map, 'L', Landmine->pos);
 }
-void findHole(char *map, struct vaccine *Vaccine){
-    find(*map, 'V', Vaccine->pos);
+void findVaccine(char *map, struct vaccine *Vaccine){
+    finder(*map, 'V', Vaccine->pos);
 }
 void findCitizen(char *map, struct citizen *Citizen){
-    find(*map, 'C', Citizen->pos);
+    finder(*map, 'C', Citizen->pos);
 }
 void findDumbZombie(char *map, struct zombie *Zombie){
-    find(*map, 'd', Zombie->pos);
+    finder(*map, 'd', Zombie->pos);
 }
 void findSmartZombie(char *map, struct zombie *Zombie){
-    find(*map, 's', Zombie->pos);
+    finder(*map, 's', Zombie->pos);
 }
 
-void createHoleArray(){
+//void createHoleArray(){
 
-}
-
-
+//}
 
 
 
 
-void find(char *map[][16], char character, int *pos[]){
+
+
+void finder(char *map[][16], char character, int *pos[]){
     int i;
     int k;
     for (i=0; i<16; i++){

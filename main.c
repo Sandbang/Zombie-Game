@@ -1,16 +1,16 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "include/raylib.h"
 #include "include/rust_print.h"
-#include "finder.c"
+//#include "finder.c"
 extern int rust_function(void);
 
-const playerX = 2;
-const playerY = 3;
+const int playerX = 2;
+const int playerY = 3;
 
 
 int main() {
-    int poop = rust_function();
     //char map[] = "#####################    @             ##                  ##                  ##                  ##                  ##                  ##                  ##                  ##                  ##                  ##                  #####################";
     char map0[] = "################";
     char map1[] = "#              #";
@@ -56,7 +56,7 @@ int main() {
     Texture2D player = LoadTexture("assets/player.png");
     Texture2D floor = LoadTexture("assets/floor.png");
 
-    int *player_pos = {0, 0};
+    int *player_pos = (int*)malloc(2 * sizeof(int));;
     player_pos[0] = playerX;
     player_pos[1] = playerY;
     //find_player(map_all, player_pos);
@@ -85,7 +85,7 @@ int main() {
 
             }
             else{
-                 player_pos[1] = player_pos[1]-1;
+                player_pos[1] = player_pos[1]-1;
 
             }
         };
