@@ -1,0 +1,11 @@
+[package]
+name = "file_read"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["staticlib"]
+
+[dependencies]
+libc = "0.2.169"
+nom = "8.0.0"
