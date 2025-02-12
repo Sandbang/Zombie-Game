@@ -6,11 +6,11 @@ typedef struct Player{
     int hearts;
     int vaccine;
     int landmine;
+    int score;
 };
 struct Zombie{
     bool alive;
     int pos[2];
-    bool s;
 };
 struct Hole{
     bool alive;
@@ -38,4 +38,7 @@ int count(char **map, char character);
 void vaccinePopulater(char **map, struct Vaccine vaccineArr[], int count);
 void landminePopulater(char **map, struct Landmine landmineArr[], int count);
 void holePopulater(char **map, struct Hole holeArr[], int count);
+void smartZombiePopulater(char **map, struct Zombie Arr[], int count);
+void dumbZombiePopulater(char **map, struct Zombie Arr[], int count);
+void citizenPopulater(char **map, struct Citizen Arr[], int count);
 # endif

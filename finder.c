@@ -71,29 +71,49 @@ int count(char **map, char character){
 }
 
 
-void vaccinePopulater(char **map, struct Vaccine vaccineArr[], int count){
+void vaccinePopulater(char **map, struct Vaccine Arr[], int count){
     int i;
     for (i=0; i !=count; i++){
-        finder(map, 'V',  &(vaccineArr[i].pos));
-        ((map[vaccineArr[i].pos[1]])[vaccineArr[i].pos[0]]) = ' ';
-        vaccineArr[i].alive = true;
+        finder(map, 'V',  &(Arr[i].pos));
+        ((map[Arr[i].pos[1]])[Arr[i].pos[0]]) = ' ';
+        Arr[i].alive = true;
     }
 }
 
-void landminePopulater(char **map, struct Landmine landmineArr[], int count){
+void landminePopulater(char **map, struct Landmine Arr[], int count){
     int i;
     for (i=0; i !=count; i++){
-        finder(map, 'L',  &(landmineArr[i].pos));
-        ((map[landmineArr[i].pos[1]])[landmineArr[i].pos[0]]) = ' ';
-        landmineArr[i].alive = true;
-        landmineArr[i].armed = false;
+        finder(map, 'L',  &(Arr[i].pos));
+        ((map[Arr[i].pos[1]])[Arr[i].pos[0]]) = ' ';
+        Arr[i].alive = true;
+        Arr[i].armed = false;
     }
 }
-void holePopulater(char **map, struct Hole holeArr[], int count){
+void holePopulater(char **map, struct Hole Arr[], int count){
     int i;
     for (i=0; i !=count; i++){
-        finder(map, 'O',  &(holeArr[i].pos));
-        ((map[holeArr[i].pos[1]])[holeArr[i].pos[0]]) = ' ';
+        finder(map, 'O',  &(Arr[i].pos));
+        ((map[Arr[i].pos[1]])[Arr[i].pos[0]]) = ' ';
     }
 }
-
+void smartZombiePopulater(char **map, struct Zombie Arr[], int count){
+    int i;
+    for (i=0; i !=count; i++){
+        finder(map, 'S',  &(Arr[i].pos));
+        ((map[Arr[i].pos[1]])[Arr[i].pos[0]]) = ' ';
+    }
+}
+void dumbZombiePopulater(char **map, struct Zombie Arr[], int count){
+    int i;
+    for (i=0; i !=count; i++){
+        finder(map, 'D',  &(Arr[i].pos));
+        ((map[Arr[i].pos[1]])[Arr[i].pos[0]]) = ' ';
+    }
+}
+void citizenPopulater(char **map, struct Citizen Arr[], int count){
+    int i;
+    for (i=0; i !=count; i++){
+        finder(map, 'C',  &(Arr[i].pos));
+        ((map[Arr[i].pos[1]])[Arr[i].pos[0]]) = ' ';
+    }
+}

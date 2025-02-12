@@ -15,12 +15,12 @@ const int playerY = 1;
 int main() {
     //char map = "################# @            ##              ##              ##      ##########              ##        #     ###########     ##              ##              ##              ##              ##              ##              ##              #################";
     char map0[] = "################";
-    char map1[] = "#              #";
+    char map1[] = "#SSDD          #";
     char map2[] = "#    V         #";
     char map3[] = "#          V   #";
     char map4[] = "#      #########";
     char map5[] = "#              #";
-    char map6[] = "# L      #O    #";
+    char map6[] = "# L CC   #O    #";
     char map7[] = "##########     #";
     char map8[] = "#      L       #";
     char map9[] = "#              X";
@@ -60,14 +60,16 @@ int main() {
     Texture2D mine1 = LoadTexture("assets/mine1.png");
     Texture2D bye = LoadTexture("assets/exit.png");
     Texture2D pit = LoadTexture("assets/hole.png");
+    Texture2D smartZom = LoadTexture("assets/zom1.png");
+    Texture2D dumbZom = LoadTexture("assets/zom0.png");
+    Texture2D saveme = LoadTexture("assets/civ1.png");
 
     //initializing exit
     struct Exit exit = {{0,0}};
     finder(map_all, 'X', &(exit.pos));
     map_all[exit.pos[1]][exit.pos[0]] = ' ';
-
     //initializing player
-    struct Player player = {{0,0}, 3, 0, 0};
+    struct Player player = {{0,0}, 3, 0, 0, 0};
     finder(map_all, '@', &(player.pos));
     int initPos[] = {*player.pos};
     map_all[player.pos[1]][player.pos[0]] = ' ';
@@ -86,17 +88,24 @@ int main() {
     int holeCount = count(map_all, 'O');
     holeArr = (struct Hole*)malloc(count(map_all, 'O') * sizeof(struct Hole));
     holePopulater(map_all, holeArr, holeCount);
-    //initializing dumb zombie
-    struct Hole *holeArr;
-    int holeCount = count(map_all, 'O');
-    holeArr = (struct Hole*)malloc(count(map_all, 'O') * sizeof(struct Hole));
-    holePopulater(map_all, holeArr, holeCount);
     //initializing smart zombie
-
-
+    struct Zombie *smartZombieArr;
+    int smartZombieCount = count(map_all, 'S');
+    smartZombieArr = (struct Zombie*)malloc(count(map_all, 'S') * sizeof(struct Zombie));
+    smartZombiePopulater(map_all, smartZombieArr, smartZombieCount);
+    //initializing dumb zombie
+    struct Zombie *dumbZombieArr;
+    int dumbZombieCount = count(map_all, 'S');
+    dumbZombieArr = (struct Zombie*)malloc(count(map_all, 'S') * sizeof(struct Zombie));
+    smartZombiePopulater(map_all, dumbZombieArr, dumbZombieCount);
+    //initializing citizen
+    struct Citizen *citizenArr;
+    int citizenCount = count(map_all, 'C');
+    citizenArr = (struct Citizen*)malloc(count(map_all, 'C') * sizeof(struct Citizen));
+    citizenPopulater(map_all, citizenArr, citizenCount);
 
     
-
+    int randNum = 0;
     
     int x = count(map_all, '#');
     printf("The value of number is: %d\n", x);
@@ -200,13 +209,51 @@ int main() {
                 }else {
                 }
             }
-            
+            //citizens:
+            for (i=0; i !=citizenCount; i++){
+                DrawTexture(saveme, citizenArr[i].pos[0]*16, citizenArr[i].pos[1]*16, WHITE);
 
-            //Text for stats
+                
+                if (citizenArr[i].pos[0] == player.pos[0] && citizenArr[i].pos[1] == player.pos[1]){
+                    
+                }else {
+                }
+            }
+            //dumb zombie logic
+            for (i=0; i !=dumbZombieCount; i++){
+                DrawTexture(dumbZom, dumbZombieArr[i].pos[0]*16, holeArr[i].pos[1]*16, WHITE);
+                
+                randNum = (rand() % 4) + 1;
+                switch (randNum){
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    default:
+                        break;
+                }
+            }
+            //smart zombie logic
+
             
+            for (i=0; i !=smartZombieCount; i++){
+                DrawTexture(smartZom, smartZombieArr[i].pos[0]*16, smartZombieArr[i].pos[1]*16, WHITE);
+
+                
+                if (smartZombieArr[i].pos[0] == player.pos[0] && smartZombieArr[i].pos[1] == player.pos[1]){
+                    
+                }else {
+                }
+            }
+            //Text for stats
             DrawText(TextFormat("Lives: %02i", player.hearts), 5, 266, 6, RED);
-            DrawText(TextFormat("Vaccines: %02i", player.vaccine), 75, 266, 6, RED);
-            DrawText(TextFormat("Landmines: %02i", player.landmine), 180, 266, 6, RED);
+            DrawText(TextFormat("Vaccines: %02i", player.vaccine), 55, 266, 6, RED);
+            DrawText(TextFormat("Landmines: %02i", player.landmine), 125, 266, 6, RED);
+            DrawText(TextFormat("Score: %02i", player.score), 200, 266, 6, RED);
         EndDrawing();
         Sleep(100);
     }
