@@ -3,19 +3,21 @@
 #include <stdlib.h>
 #include "include/raylib.h"
 #include "include/rust_print.h"
-//#include "finder.c"
+#include "include/finder.h"
+#include "finder.c"
+
 extern int rust_function(void);
 
 const int playerX = 2;
-const int playerY = 3;
+const int playerY = 1;
 
 
 int main() {
-    //char map[] = "#####################    @             ##                  ##                  ##                  ##                  ##                  ##                  ##                  ##                  ##                  ##                  #####################";
+    //char map = "################# @            ##              ##              ##      ##########              ##        #     ###########     ##              ##              ##              ##              ##              ##              ##              #################";
     char map0[] = "################";
-    char map1[] = "#              #";
+    char map1[] = "# @            #";
     char map2[] = "#              #";
-    char map3[] = "# @            #";
+    char map3[] = "#              #";
     char map4[] = "#      #########";
     char map5[] = "#              #";
     char map6[] = "#        #     #";
@@ -29,8 +31,7 @@ int main() {
     char map14[] = "#              #";
     char map15[] = "################";
 
-
-    char* map_all[] = {
+    char *map_all[16] = {
         map0,
         map1,
         map2,
@@ -50,51 +51,57 @@ int main() {
     };
 
 
-    InitWindow(256, 256, "Game");
+    InitWindow(256, 286, "Game");
 
     Texture2D wall = LoadTexture("assets/brick.png");
-    Texture2D player = LoadTexture("assets/player.png");
+    Texture2D veteran = LoadTexture("assets/player.png");
     Texture2D floor = LoadTexture("assets/floor.png");
 
-    int *player_pos = (int*)malloc(2 * sizeof(int));;
-    player_pos[0] = playerX;
-    player_pos[1] = playerY;
-    //find_player(map_all, player_pos);
-    map_all[playerY][playerX] = ' ';
+    struct Player player = {{0,0}, 3, 0, 0};
+
+
+    finder(map_all, '@', &(player.pos));
+    
+    //player.pos[0] = playerY;
+    //player.pos[1] = playerX;
+    //printf((char)player.pos[0]);
+    //printf((char)player.pos[1]);
+    //find_player(map_all, player.pos);
+    //map_all[player.pos[0]][player.pos[1]] = ' ';
 
     while(!WindowShouldClose()) {
         if (IsKeyDown(KEY_D)) {
-            if (map_all[player_pos[1]][player_pos[0]+1] == '#'){
+            if (map_all[player.pos[1]][player.pos[0]+1] == '#'){
 
             }
             else{
-                player_pos[0] = player_pos[0]+1;
+                player.pos[0] = player.pos[0]+1;
             }
         };
         if (IsKeyDown(KEY_A)) {
-            if (map_all[player_pos[1]][player_pos[0]-1] == '#'){
+            if (map_all[player.pos[1]][player.pos[0]-1] == '#'){
 
             }
             else{
-                player_pos[0] = player_pos[0]-1;
+                player.pos[0] = player.pos[0]-1;
 
             }
         };
         if (IsKeyDown(KEY_W)) {
-            if (map_all[player_pos[1]-1][player_pos[0]] == '#'){
+            if (map_all[player.pos[1]-1][player.pos[0]] == '#'){
 
             }
             else{
-                player_pos[1] = player_pos[1]-1;
+                player.pos[1] = player.pos[1]-1;
 
             }
         };
         if (IsKeyDown(KEY_S)) {
-            if (map_all[player_pos[1]+1][player_pos[0]] == '#'){
+            if (map_all[player.pos[1]+1][player.pos[0]] == '#'){
 
             }
             else{
-                player_pos[1] = player_pos[1]+1;
+                player.pos[1] = player.pos[1]+1;
 
             }
         };
@@ -114,7 +121,7 @@ int main() {
                     }
                 }
             }
-            DrawTexture(player, player_pos[0]*16, player_pos[1]*16, WHITE);
+            DrawTexture(veteran, player.pos[0]*16, player.pos[1]*16, WHITE);
         EndDrawing();
         Sleep(100);
     }

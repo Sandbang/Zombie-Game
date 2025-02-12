@@ -1,35 +1,12 @@
 #include <stdio.h>
 #include <stdbool.h>
-
-struct zombie{
-    int pos[2];
-    bool s;
-};
-struct player{
-    int pos[2];
-    int hearts;
-    int vaccine;
-    int landmine;
-};
-struct hole{
-    int pos[2];
-};
-struct exit{
-    int pos[2]
-};
-struct landmine {
-    int pos[2];
-    bool armed;
-};
-struct vaccine{
-    int pos[2];
-};
-struct citizen{
-    int pos[2];
-};
+#include "include/finder.h"
 
 
-void findPlayer(char *map, struct player *Player) {
+
+
+
+/* void findPlayer(char *map, struct player *Player) {
     finder(*map, '@', Player->pos);
 }
 
@@ -57,39 +34,42 @@ void findSmartZombie(char *map, struct zombie *Zombie){
 
 //void createHoleArray(){
 
-//}
+//} */
 
 
 
 
 
 
-void finder(char *map[][16], char character, int *pos[]){
+void finder(char **map, char character, int (*pos)[2]){
+    printf("Hillarious");
     int i;
     int k;
     for (i=0; i<16; i++){
         for (k=0; k<16; k++){
-            if (map[i][k] == character) {
-                *pos[0]= i;
-                *pos[1] = k;
+            if ((map[k])[i] == character) {
+                (*pos)[0]= i;
+                printf("In it to win it");
+                (*pos)[1] = k;
             }
         }
     }
     map[*pos[0]][*pos[1]] = ' ';
 }
-int count(char *map[][16], char character){
+
+/*int count(char **map[][16], char character){
     int i;
     int k;
     int counter = 0;
     for (i=0; i<16; i++){
         for (k=0; k<16; k++){
-            if (map[i][k] == character) {
+            if (**map[i][k] == character) {
                 counter++;
             }
         }
     }
     return counter;
-}
+}*/
 
 
 
