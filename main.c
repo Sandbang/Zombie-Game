@@ -15,19 +15,19 @@ const int playerY = 1;
 int main() {
     //char map = "################# @            ##              ##              ##      ##########              ##        #     ###########     ##              ##              ##              ##              ##              ##              ##              #################";
     char map0[] = "################";
-    char map1[] = "# @            #";
-    char map2[] = "#              #";
-    char map3[] = "#              #";
+    char map1[] = "#              #";
+    char map2[] = "#    V         #";
+    char map3[] = "#          V   #";
     char map4[] = "#      #########";
     char map5[] = "#              #";
-    char map6[] = "#        #     #";
+    char map6[] = "# L      #O    #";
     char map7[] = "##########     #";
-    char map8[] = "#              #";
-    char map9[] = "#              #";
-    char map10[] = "#              #";
-    char map11[] = "#              #";
+    char map8[] = "#      L       #";
+    char map9[] = "#              X";
+    char map10[] = "#  V     O     #";
+    char map11[] = "#        OO    #";
     char map12[] = "#              #";
-    char map13[] = "#              #";
+    char map13[] = "#   L     @    #";
     char map14[] = "#              #";
     char map15[] = "################";
 
@@ -56,20 +56,54 @@ int main() {
     Texture2D wall = LoadTexture("assets/brick.png");
     Texture2D veteran = LoadTexture("assets/player.png");
     Texture2D floor = LoadTexture("assets/floor.png");
+    Texture2D vaccine = LoadTexture("assets/health.png");
+    Texture2D mine1 = LoadTexture("assets/mine1.png");
+    Texture2D bye = LoadTexture("assets/exit.png");
+    Texture2D pit = LoadTexture("assets/hole.png");
 
+    //initializing exit
+    struct Exit exit = {{0,0}};
+    finder(map_all, 'X', &(exit.pos));
+    map_all[exit.pos[1]][exit.pos[0]] = ' ';
+
+    //initializing player
     struct Player player = {{0,0}, 3, 0, 0};
-
-
     finder(map_all, '@', &(player.pos));
-    
-    //player.pos[0] = playerY;
-    //player.pos[1] = playerX;
-    //printf((char)player.pos[0]);
-    //printf((char)player.pos[1]);
-    //find_player(map_all, player.pos);
-    //map_all[player.pos[0]][player.pos[1]] = ' ';
+    int initPos[] = {*player.pos};
+    map_all[player.pos[1]][player.pos[0]] = ' ';
+    //initializing vaccineArr
+    struct Vaccine *vaccineArr;
+    int vaxCount = count(map_all, 'V');
+    vaccineArr = (struct Vaccine*)malloc(count(map_all, 'V') * sizeof(struct Vaccine));
+    vaccinePopulater(map_all, vaccineArr, vaxCount);
+    //initializing landmineArr
+    struct Landmine *landmineArr;
+    int landmineCount = count(map_all, 'L');
+    landmineArr = (struct Landmine*)malloc(count(map_all, 'L') * sizeof(struct Landmine));
+    landminePopulater(map_all, landmineArr, landmineCount);
+    //initializing hole
+    struct Hole *holeArr;
+    int holeCount = count(map_all, 'O');
+    holeArr = (struct Hole*)malloc(count(map_all, 'O') * sizeof(struct Hole));
+    holePopulater(map_all, holeArr, holeCount);
+    //initializing dumb zombie
+    struct Hole *holeArr;
+    int holeCount = count(map_all, 'O');
+    holeArr = (struct Hole*)malloc(count(map_all, 'O') * sizeof(struct Hole));
+    holePopulater(map_all, holeArr, holeCount);
+    //initializing smart zombie
 
-    while(!WindowShouldClose()) {
+
+
+    
+
+    
+    int x = count(map_all, '#');
+    printf("The value of number is: %d\n", x);
+    //printf((char)x);
+    bool exitFound = false;
+
+    while(!WindowShouldClose() && !exitFound) {
         if (IsKeyDown(KEY_D)) {
             if (map_all[player.pos[1]][player.pos[0]+1] == '#'){
 
@@ -105,9 +139,9 @@ int main() {
 
             }
         };
-
+        //SetTargetFPS(12);
         BeginDrawing();
-            ClearBackground(RAYWHITE);
+            ClearBackground(BLACK);
 
             int i;
             int k;
@@ -121,7 +155,58 @@ int main() {
                     }
                 }
             }
+            DrawTexture(bye, exit.pos[0]*16, exit.pos[1]*16, WHITE);
             DrawTexture(veteran, player.pos[0]*16, player.pos[1]*16, WHITE);
+            if (exit.pos[0] == player.pos[0] && exit.pos[1] == player.pos[1]){
+                exitFound = true;
+            }
+            for (i=0; i !=vaxCount; i++){
+                if (vaccineArr[i].alive == true && vaccineArr[i].pos[0] == player.pos[0] && vaccineArr[i].pos[1] == player.pos[1]){
+                    vaccineArr[i].alive = false;
+                    player.vaccine += 1;
+                }else if (vaccineArr[i].alive == true){
+                    DrawTexture(vaccine, vaccineArr[i].pos[0]*16, vaccineArr[i].pos[1]*16, WHITE);
+                }
+                else {
+                }
+            }
+            for (i=0; i !=landmineCount; i++){
+                if (landmineArr[i].alive == true && landmineArr[i].pos[0] == player.pos[0] && landmineArr[i].pos[1] == player.pos[1]){
+                    landmineArr[i].alive = false;
+                    player.landmine += 1;
+                }else if (landmineArr[i].alive == true){
+                    DrawTexture(mine1, landmineArr[i].pos[0]*16, landmineArr[i].pos[1]*16, WHITE);
+                }
+                else {
+                }
+            }
+            for (i=0; i !=landmineCount; i++){
+                if (landmineArr[i].alive == true && landmineArr[i].pos[0] == player.pos[0] && landmineArr[i].pos[1] == player.pos[1]){
+                    landmineArr[i].alive = false;
+                    player.landmine += 1;
+                }else if (landmineArr[i].alive == true){
+                    DrawTexture(mine1, landmineArr[i].pos[0]*16, landmineArr[i].pos[1]*16, WHITE);
+                }
+                else {
+                }
+            }
+            for (i=0; i !=holeCount; i++){
+                DrawTexture(pit, holeArr[i].pos[0]*16, holeArr[i].pos[1]*16, WHITE);
+                if (holeArr[i].pos[0] == player.pos[0] && holeArr[i].pos[1] == player.pos[1]){
+                    player.pos[0] = initPos[0];
+                    player.pos[1] = initPos[1];
+                    player.hearts -= 1;
+                    
+                }else {
+                }
+            }
+            
+
+            //Text for stats
+            
+            DrawText(TextFormat("Lives: %02i", player.hearts), 5, 266, 6, RED);
+            DrawText(TextFormat("Vaccines: %02i", player.vaccine), 75, 266, 6, RED);
+            DrawText(TextFormat("Landmines: %02i", player.landmine), 180, 266, 6, RED);
         EndDrawing();
         Sleep(100);
     }

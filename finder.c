@@ -54,27 +54,46 @@ void finder(char **map, char character, int (*pos)[2]){
             }
         }
     }
-    map[*pos[0]][*pos[1]] = ' ';
 }
 
-/*int count(char **map[][16], char character){
+int count(char **map, char character){
     int i;
     int k;
     int counter = 0;
     for (i=0; i<16; i++){
         for (k=0; k<16; k++){
-            if (**map[i][k] == character) {
-                counter++;
+            if ((map[k])[i] == character) {
+                counter += 1;
             }
         }
     }
     return counter;
-}*/
+}
 
 
+void vaccinePopulater(char **map, struct Vaccine vaccineArr[], int count){
+    int i;
+    for (i=0; i !=count; i++){
+        finder(map, 'V',  &(vaccineArr[i].pos));
+        ((map[vaccineArr[i].pos[1]])[vaccineArr[i].pos[0]]) = ' ';
+        vaccineArr[i].alive = true;
+    }
+}
 
-
-
-
-
+void landminePopulater(char **map, struct Landmine landmineArr[], int count){
+    int i;
+    for (i=0; i !=count; i++){
+        finder(map, 'L',  &(landmineArr[i].pos));
+        ((map[landmineArr[i].pos[1]])[landmineArr[i].pos[0]]) = ' ';
+        landmineArr[i].alive = true;
+        landmineArr[i].armed = false;
+    }
+}
+void holePopulater(char **map, struct Hole holeArr[], int count){
+    int i;
+    for (i=0; i !=count; i++){
+        finder(map, 'O',  &(holeArr[i].pos));
+        ((map[holeArr[i].pos[1]])[holeArr[i].pos[0]]) = ' ';
+    }
+}
 

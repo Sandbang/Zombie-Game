@@ -8,25 +8,34 @@ typedef struct Player{
     int landmine;
 };
 struct Zombie{
+    bool alive;
     int pos[2];
     bool s;
 };
 struct Hole{
+    bool alive;
     int pos[2];
 };
 struct Exit{
     int pos[2]
 };
 struct Landmine {
+    bool alive;
     int pos[2];
     bool armed;
 };
 struct Vaccine{
+    bool alive;
     int pos[2];
 };
 struct Citizen{
+    bool alive;
     int pos[2];
 };
 
 void finder(char **, char character, int (*pos)[2]);
+int count(char **map, char character);
+void vaccinePopulater(char **map, struct Vaccine vaccineArr[], int count);
+void landminePopulater(char **map, struct Landmine landmineArr[], int count);
+void holePopulater(char **map, struct Hole holeArr[], int count);
 # endif
