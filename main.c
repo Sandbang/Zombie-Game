@@ -88,22 +88,16 @@ int main() {
     int holeCount = count(map_all, 'O');
     holeArr = (struct Hole*)malloc(count(map_all, 'O') * sizeof(struct Hole));
     holePopulater(map_all, holeArr, holeCount);
-    //initializing smart zombie
-    struct Zombie *smartZombieArr;
-    int smartZombieCount = count(map_all, 'S');
-    smartZombieArr = (struct Zombie*)malloc(count(map_all, 'S') * sizeof(struct Zombie));
-    smartZombiePopulater(map_all, smartZombieArr, smartZombieCount);
     //initializing dumb zombie
     struct Zombie *dumbZombieArr;
-    int dumbZombieCount = count(map_all, 'S');
-    dumbZombieArr = (struct Zombie*)malloc(count(map_all, 'S') * sizeof(struct Zombie));
-    smartZombiePopulater(map_all, dumbZombieArr, dumbZombieCount);
+    int dumbZombieCount = count(map_all, 'D');
+    dumbZombieArr = (struct Zombie*)malloc(count(map_all, 'D') * sizeof(struct Zombie));
+    dumbZombiePopulater(map_all, dumbZombieArr, dumbZombieCount);
     //initializing citizen
     struct Citizen *citizenArr;
     int citizenCount = count(map_all, 'C');
     citizenArr = (struct Citizen*)malloc(count(map_all, 'C') * sizeof(struct Citizen));
     citizenPopulater(map_all, citizenArr, citizenCount);
-
     
     int randNum = 0;
     
@@ -221,25 +215,48 @@ int main() {
             }
             //dumb zombie logic
             for (i=0; i !=dumbZombieCount; i++){
-                DrawTexture(dumbZom, dumbZombieArr[i].pos[0]*16, holeArr[i].pos[1]*16, WHITE);
-                
-                randNum = (rand() % 4) + 1;
-                switch (randNum){
-                    case 1:
-                        break;
-                    case 2:
-                        break;
-                    case 3:
-                        break;
-                    case 4:
-                        break;
-                    default:
-                        break;
-                }
+    
+                DrawTexture(dumbZom, dumbZombieArr[i].pos[0]*16, dumbZombieArr[i].pos[1]*16, WHITE);
+                randNum = rand() % 20;
+                if (randNum == 1)
+                    randNum = (rand() % 4) + 1;
+                    switch (randNum){
+                        case 1:
+                            if (map_all[dumbZombieArr[i].pos[0]][dumbZombieArr[i].pos[1] + 1] == '#'){
+                            }
+                            else{
+                                dumbZombieArr[i].pos[1] = dumbZombieArr[i].pos[1] + 1;
+                                
+                            }                            
+                            break;
+                        case 2:
+                            if (map_all[dumbZombieArr[i].pos[0]][dumbZombieArr[i].pos[1] - 1] == '#'){
+                            }
+                            else{
+                                dumbZombieArr[i].pos[1] = dumbZombieArr[i].pos[1] - 1;
+                            }
+                            break;
+                        case 3:
+                            if (map_all[dumbZombieArr[i].pos[0] + 1][dumbZombieArr[i].pos[1]] == '#'){
+                            }
+                            else{
+                                dumbZombieArr[i].pos[0] = dumbZombieArr[i].pos[0] + 1;
+                            }
+                            break;
+                        case 4:
+                            if (map_all[dumbZombieArr[i].pos[0] - 1][dumbZombieArr[i].pos[1]] == '#'){
+                            }
+                            else{
+                                dumbZombieArr[i].pos[0] = dumbZombieArr[i].pos[0] - 1;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
             }
             //smart zombie logic
 
-            
+            /*
             for (i=0; i !=smartZombieCount; i++){
                 DrawTexture(smartZom, smartZombieArr[i].pos[0]*16, smartZombieArr[i].pos[1]*16, WHITE);
 
@@ -249,6 +266,7 @@ int main() {
                 }else {
                 }
             }
+            */
             //Text for stats
             DrawText(TextFormat("Lives: %02i", player.hearts), 5, 266, 6, RED);
             DrawText(TextFormat("Vaccines: %02i", player.vaccine), 55, 266, 6, RED);
